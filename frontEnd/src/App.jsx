@@ -1,36 +1,52 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import Header from './Components/Header';
+import Footer from './Components/Footer';
+import RoutedMain from './Components/RoutedMain';
+import Authentication from './Components/authentification/Authentication';
+import { checkLogin } from './Components/authentification/authHelper';
+import AllPeeps from './Components/AllPeeps';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  const handleLogin = async ({ email, password }) => {
+    setLoggedIn(await checkLogin({email, password}));
+  }  
+
+  const logout = () => {
+    setLoggedIn(false);
+  };
 
   return (
     <>
+      {/* <div className="header">
+        <Header loggedIn={loggedIn} logout={logout} />
+        {!loggedIn && <Authentication handleLogin={handleLogin} />}
+        {loggedIn && <RoutedMain />}
+        
+      </div>
+
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <AllPeeps className="ViewAll"/>
+        <p>It works and you found me!</p>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-      <p>It works and you found me!</p>
+      
+      <div>
+        <Footer className="footer" />
+      </div> */}
+      <div className="container">
+  
+        <Header loggedIn={loggedIn} logout={logout} />
+        {!loggedIn && <Authentication handleLogin={handleLogin} />}
+        {loggedIn && <RoutedMain />}
+        
+        <p>It works and you found me!</p>
+         {/* <AllPeeps className="ViewAll"/> */}
+        <Footer />
+        </div>
     </>
-  )
+  );
 }
 
 export default App

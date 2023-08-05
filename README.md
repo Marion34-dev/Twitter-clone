@@ -48,7 +48,7 @@ I want to log out of Chitter
 
 You can fork this repository and clone it to your local machine.
 
-You will need to enter:
-`npm install` (or `npm i` for Mac users) to install all dependencies
-`npm start` to start tje server
+You will need to enter: <br>
+`npm install` (or `npm i` for Mac users) to install all dependencies <br>
+`npm start` to start tje server <br>
 `npm test` to run the tests
