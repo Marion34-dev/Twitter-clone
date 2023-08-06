@@ -3,14 +3,22 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "mocha"
+    "test": "NODE_ENV=test mocha --timeout 10000 --exit",
+    "start": "NODE_ENV=development nodemon server",
+    "start-prod": "NODE_ENV=production nodemon src/server",
+    "test-win": "SET NODE_ENV=test&&mocha --timeout 10000 --exit",
+    "start-win": "SET NODE_ENV=development&&nodemon src/server",
+    "start-prod-win": "SET NODE_ENV=production&&nodemon src/server"
   },
   "author": "Marion Jung",
   "license": "ISC",
   "dependencies": {
     "chai": "^4.3.7",
     "chai-http": "^4.4.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "express-validator": "^7.0.1",
     "mocha": "^10.2.0",
