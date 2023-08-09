@@ -5,13 +5,18 @@ import bcrypt from 'bcrypt';
 const router = express.Router();
 
 router.post('/', async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, username, name } = req.body;
 
   try {
     // Check if the user already exists in the database
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.json({ message: 'User already exists' });
+    }
+
+    const existingUsername = await User.findOne({ username });
+    if (existingUsername) {
+      return res.json({ message: 'This username already exists' });
     }
 
     // Hash the password before saving it to the database
@@ -21,6 +26,8 @@ router.post('/', async (req, res) => {
     const newUser = new User({
       email,
       password: hashedPassword,
+      name,
+      username,
     });
 
     // Save the new user to the database

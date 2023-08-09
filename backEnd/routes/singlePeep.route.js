@@ -1,6 +1,6 @@
 import express from 'express';
 import { getSinglePeep, updatePeep } from '../controllers/singlePeep.controller.js';
-import { updatePeepValidation } from '../middlewares/peeps.validation.js';
+import { updatePeepValidation } from '../middleware/peeps.validation.js';
 
 
 const router = express.Router();
