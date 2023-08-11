@@ -25,10 +25,11 @@ const AddPeep = ({ submitAction, data }) => {
         if (submitted) navigate("/");
     }, [submitted, navigate]);
 
-    const submitPeep = (peepMessage, peepDateCreated, peepCreatedBy) => {
-        const peepToSubmit = new PeepModel(peepMessage, new Date(peepDateCreated).toISOString(), peepCreatedBy, _id);
+    const submitPeep = (peepMessage, peepDateCreated, peepCreatedBy, username) => {
+        const peepToSubmit = new PeepModel(peepMessage, new Date(peepDateCreated).toISOString(), peepCreatedBy, username, _id);
         submitAction(peepToSubmit);
         setSubmitted(true);
+        console.log("Peep posted)")
     }
 
     return (
@@ -49,7 +50,8 @@ AddPeep.propTypes = {
             _id: PropTypes.string,
             peepMessage: PropTypes.string,
             peepDateCreated: PropTypes.string,
-            peepCreatedBy: PropTypes.string
+            peepCreatedBy: PropTypes.string,
+            username: PropTypes.string
         })
     )
 }

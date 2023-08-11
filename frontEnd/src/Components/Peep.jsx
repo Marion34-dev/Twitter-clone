@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import PeepModel from './utils/Peep.model';
 
 const Peep = ({ peep }) => {
-    const { peepMessage, peepDateCreated, peepCreatedBy, _id} = peep;
+    const { peepMessage, peepDateCreated, peepCreatedBy, username, _id} = peep;
     const dateCreated = new Date(peepDateCreated).toUTCString();
 
     return (
@@ -11,6 +11,7 @@ const Peep = ({ peep }) => {
             <td>{peepMessage}</td>
             <td>{dateCreated}</td>
             <td>{peepCreatedBy}</td>
+            <td>{username}</td>
         </tr>
     );
 };

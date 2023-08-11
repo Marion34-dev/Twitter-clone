@@ -3,9 +3,10 @@ import './App.css'
 import Header from './Components/Header';
 import Footer from './Components/Footer';
 import RoutedMain from './Components/RoutedMain';
-import Authentication from './Components/authentification/Authentication';
-import { checkLogin } from './Components/authentification/authHelper';
+import Authentication from './Components/authentication/Authentication';
+import { checkLogin } from './Components/authentication/authHelper';
 import AllPeeps from './Components/AllPeeps';
+import samplePeepsData from './Components/utils/sampleData';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -20,29 +21,22 @@ function App() {
 
   return (
     <>
-      {/* <div className="header">
-        <Header loggedIn={loggedIn} logout={logout} />
-        {!loggedIn && <Authentication handleLogin={handleLogin} />}
-        {loggedIn && <RoutedMain />}
-        
-      </div>
-
-      <div>
-        <AllPeeps className="ViewAll"/>
-        <p>It works and you found me!</p>
-      </div>
-      
-      <div>
-        <Footer className="footer" />
-      </div> */}
       <div className="container">
-  
-        <Header loggedIn={loggedIn} logout={logout} />
-        {!loggedIn && <Authentication handleLogin={handleLogin} />}
-        {loggedIn && <RoutedMain />}
+        <Header/>
+ 
+      
+         
+        <AllPeeps data={samplePeepsData} className="ViewAll" />
         
-        <p>It works and you found me!</p>
-         {/* <AllPeeps className="ViewAll"/> */}
+                        
+        {loggedIn ? (
+          // Render RoutedMain if logged in
+          <RoutedMain />
+        ) : (
+          // Render Authentication if not logged in
+            <Authentication handleLogin={handleLogin} />
+        )}
+
         <Footer />
         </div>
     </>

@@ -9,21 +9,24 @@ const PeepWrapper = ({ submitAction, peep }) => {
     const [peepMessage, setPeepMessage] = useState(``);
     const [peepDateCreated, setPeepDateCreated] = useState(null);
     const [peepCreatedBy, setPeepCreatedBy] = useState(``);
+    const [username, setUsername] = useState(``);
 
     useEffect(() => {
         if (editPeep) {
             setPeepMessage(peep.peepMessage);
             setPeepDateCreated(peep.peepDateCreated);
             setPeepCreatedBy(peep.peepCreatedBy);
+            setUsername(peep.username);
         }
-    }, [editPeep, peep.peepCreatedBy, peep.peepDateCreated, peep.peepMessage]);
+    }, [editPeep, peep.peepCreatedBy, peep.peepDateCreated, peep.peepMessage, peep.username]);
 
     const handleSubmit = event => {
         event.preventDefault();
-        submitAction(peepMessage, peepDateCreated, peepCreatedBy, peep?._id);
+        submitAction(peepMessage, peepDateCreated, peepCreatedBy, username, peep?._id);
         setPeepMessage(``);
         setPeepDateCreated(null);
         setPeepCreatedBy(``);
+        setUsername(``);
     }
 
     return (
@@ -55,6 +58,16 @@ const PeepWrapper = ({ submitAction, peep }) => {
                     onChange={event => setPeepCreatedBy(event.target.value)}
                 />
             </div>
+             <div className="form-group" hidden={!editPeep}>
+                <label htmlFor="username">Username:&nbsp;</label>
+                <input
+                    type="text"
+                    name="username"
+                    placeholder="Username"
+                    value={username}
+                    onChange={event => setUsername(event.target.value)}
+                />
+            </div>
             <div className="form-group">
                 <input type="submit" value="Submit" className={`btn ${!peepMessage ? `btn-danger` : `btn-primary`}`} disabled={!peepMessage} />
             </div>
@@ -65,9 +78,10 @@ const PeepWrapper = ({ submitAction, peep }) => {
 PeepWrapper.propTypes = {
     submitAction: PropTypes.func.isRequired,
     peep: PropTypes.shape({
-        peepDescription: PropTypes.string,
+        peepMessage: PropTypes.string,
         peepDateCreated: PropTypes.string,
         peepCreatedBy: PropTypes.string,
+        username: PropTypes.string,
         _id: PropTypes.string
     })
 }

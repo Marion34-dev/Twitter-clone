@@ -16,12 +16,16 @@ const RoutedMain = () => {
 
     const getPeepsHandler = async () => {
         const externalDataCallResult = await getPeeps();
+              console.log('externalDataCallResult:', externalDataCallResult); // checks
+
         if (externalDataCallResult?.error) {
             const errorObject = { ...externalDataCallResult.error, modalShown: false };
             errorObject.message = `There was a problem getting the peeps: ${externalDataCallResult.error.message}`;
             setError(errorObject);
         }
         const peeps = externalDataCallResult?.peeps ? externalDataCallResult.peeps : [];
+              console.log('peeps:', peeps); // checks
+
         setPeeps(peeps);
     };
 

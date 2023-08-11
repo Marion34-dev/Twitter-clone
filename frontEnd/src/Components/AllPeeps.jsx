@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import Peep from './Peep';
 import PeepModel from './utils/Peep.model';
 
-const AllPeeps = ({ data, selectPeep }) => {
+const AllPeeps = ({ data }) => {
 
     const [dataStatus, setDataStatus] = useState({ name: `loading`, message: `Data is loading...` });
 
@@ -14,7 +14,6 @@ const AllPeeps = ({ data, selectPeep }) => {
         }
 
         setDataStatus({ name: `loading`, message: `Data is loading...` });
-
     }, [data]);
 
 
@@ -22,8 +21,8 @@ const AllPeeps = ({ data, selectPeep }) => {
         const { peeps } = data;
         if (peeps?.length > 0) {
             const displayPeeps = peeps.map(currentPeep => {
-                const peep = new PeepModel(currentPeep.peepMessage, currentPeep.peepDateCreated, currentPeep.peepCreatedBy, currentPeep._id);
-                return <Peep peep={peep} key={peep._id} selectPeep={selectPeep} />
+                const peep = new PeepModel(currentPeep.peepMessage, currentPeep.peepDateCreated, currentPeep.peepCreatedBy, currentPeep.username, currentPeep._id);
+                return <Peep peep={peep} key={peep._id}  />
             });
             return displayPeeps;
         }
@@ -42,6 +41,7 @@ const AllPeeps = ({ data, selectPeep }) => {
                         <th>Message</th>
                         <th>Date Created</th>
                         <th>Created By</th>
+                        <th>Username</th>
                     </tr>
                 </thead>
                 <tbody>{populateTable()}</tbody>
@@ -49,21 +49,22 @@ const AllPeeps = ({ data, selectPeep }) => {
         </div>
     );
 };
+    AllPeeps.propTypes = {
+        data: PropTypes.oneOfType([
+            PropTypes.exact({
+                peeps: PropTypes.arrayOf(
+                    PropTypes.shape({
+                        _id: PropTypes.string,
+                        peepMessage: PropTypes.string,
+                        peepDateCreated: PropTypes.string,
+                        peepCreatedBy: PropTypes.string,
+                        username: PropTypes.string
+                    })
+                ),
+                error: PropTypes.string
+            }),
+        ])
+    };
 
-AllPeeps.propTypes = {
-    data: PropTypes.oneOfType([
-        PropTypes.exact({
-            peeps: PropTypes.arrayOf(
-                PropTypes.shape({
-                    _id: PropTypes.string,
-                    peepMessage: PropTypes.string,
-                    peepDateCreated: PropTypes.string,
-                    peepCreatedBy: PropTypes.string
-                })
-            ),
-            error: PropTypes.string
-        }),
-    ])
-};
 
 export default AllPeeps;

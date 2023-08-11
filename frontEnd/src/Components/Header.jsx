@@ -10,13 +10,13 @@ const Header = ({ loggedIn, logout }) => {
         <span className="navbar-toggler-icon"></span>
           </button>
           <Link to="/" className="navbar-brand">Chitter App</Link>
-          {loggedIn && (
             <>
               <div className="collapse navbar-collapse">
                 <div className="navbar-nav">
                   <NavLink to="/">
-                    View all Peeps
-                  </NavLink>
+                    View Peeps
+                  </NavLink>   
+
                   <NavLink to="/add" className={(({ isActive }) => isActive ? `nav-link active` : `nav-link`)}>
                     Post Peep
                   </NavLink>
@@ -24,7 +24,6 @@ const Header = ({ loggedIn, logout }) => {
               </div>
               <a href="/" className="nav-item mr-3 nav-link p-3" onClick={logout}>Log Out</a>
             </>
-          )}
         </div>
       </nav>
     </header>

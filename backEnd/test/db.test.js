@@ -155,6 +155,15 @@ describe(`Testing requests on the database`, () => {
             expect(res.text).to.be.eql(`Adding new peep failed`);
         });
     });
+
+         describe('Testing the /log out route', () => {
+             it('should successfully log out the user', async () => {
+                  const res = await chai.request(server).post('/logout').send();
+
+            expect(res).to.have.status(200);
+            expect(res.body).to.have.property('message', 'You\'ll be missed!');
+            });
+    });
     
 
     // describe(`/GET/:id peep`, () => {
