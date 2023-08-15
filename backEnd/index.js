@@ -23,6 +23,7 @@ const main = async () => {  // connects to DB
   console.log(`Successfully connected to ${process.env.DB_URI}`);
 };
 
+
 main().catch((err) => console.log(err));  // error handling if connection unsuccessful
 
 // Middleware

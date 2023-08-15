@@ -78,7 +78,7 @@ describe(`Testing requests on the database`, () => {
             const loginRes = await chai.request(server).post('/login').send({ email: 'test@example.com', password: 'testpassword' });
 
             expect(loginRes).to.have.status(200);
-            expect(loginRes.body).to.have.property('message', 'Login success');
+            expect(loginRes.body).to.have.property('message', 'You are successfully logged in!');
         });
     });
 

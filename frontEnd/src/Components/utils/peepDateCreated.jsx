@@ -1,25 +1,14 @@
-// import PropTypes from 'prop-types';
-// import Peeps from './Peep.jsx';
+const formatDate = (dateTime) => {
+    const options = { 
+        day: '2-digit', 
+        month: 'short', 
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+    };
+    return new Date(dateTime).toLocaleString(undefined, options);
 
+};
 
-// function peepDateCreated({ peeps }) {
-//     return (
-//         <ul className="timeStamp">
-//             {peeps
-//                 .sort((a, b) => new Date(b.date) - new Date(a.date))
-//                 .map(({ id, user, created_on, content }) => (
-//                     <li key={id} className="timeStamp-item">
-//                         <Peeps user={user} createdOn={created_on}>
-//                             {content}
-//                         </Peeps>
-//                     </li>
-//                 ))}
-//         </ul>
-//     );
-// }
-
-// peepDateCreated.propTypes = {
-//     peeps: PropTypes.array,
-// };
-
-// export default peepDateCreated;
+export default formatDate;

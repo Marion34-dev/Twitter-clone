@@ -1,14 +1,8 @@
 import PropTypes from 'prop-types';
+import formatDate from '../Components/utils/peepDateCreated';
 
 const Peep = ({ body }) => {
     const { peepCreatedBy, username, peepDateCreated, peepMessage } = body;
-
-    // Function to format the date as DD/MMM/YYYY
-    const formatDate = (date) => {
-        const options = { day: '2-digit', month: 'short', year: 'numeric' };
-        return new Date(date).toLocaleDateString(undefined, options);
-    };
-
     const formattedDate = formatDate(peepDateCreated);
 
     return (

@@ -101,10 +101,10 @@ const RegistrationForm = () => {
                         onChange={handleChange}
                     />
                 </div>
-                <button id="registerButton" type="submit">Register</button>
+                <button id="register-button" type="submit">Register</button>
             </form>
-
-            <p> Already have an account? <Link to="/login"><br /> Login </Link></p>
+            <br></br>
+            <p> Already have an account? <Link to="/login"> Login! </Link></p>
         </>
     );
 }

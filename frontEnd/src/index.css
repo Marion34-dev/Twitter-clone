@@ -29,7 +29,6 @@
 } 
 
 .footer {
-  position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
@@ -50,4 +49,39 @@ h1 {
   text-align: center;
   padding: 1.2em;
   font-style: italic;
+}
+
+.mb-3 {
+    width: 400px;
+    margin-left: 15em;
+}
+
+.form-control {
+  width: 100px;
+}
+
+.form-label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.button {
+  cursor: pointer;
+}
+
+.largerTextarea {
+  width: 50%;
+  height: 10em;
+}
+
+#newPeep-button {
+  padding: 0.2em;
+}
+
+#login-button {
+    padding: 0.4em;
+}
+
+#register-button {
+   padding: 0.2em;
 }

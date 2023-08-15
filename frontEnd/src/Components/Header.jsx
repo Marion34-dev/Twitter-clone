@@ -5,6 +5,7 @@ const Header = ({ user: { loginUser, setLoginUser } }) => {
 
     const logOut = () => {
         setLoginUser(null)
+        window.alert("You have been logged out successfully.");
     }
 
     return (

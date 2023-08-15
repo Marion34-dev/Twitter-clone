@@ -56,11 +56,11 @@ const Login = ({ user: { loginUser, setLoginUser } }) => {
                         onChange={handleChange}
                     />
                 </div> 
-                <button id="login" type="submit">Login</button> 
+                <button id="login-button" type="submit">Login</button> 
             </form>
             <br />
             <Link to="/register">
-                <p>Or register now!</p>
+                <p>Or Register now!</p>
             </Link>
         </>
     );
@@ -69,7 +69,7 @@ const Login = ({ user: { loginUser, setLoginUser } }) => {
 Login.propTypes = {
     user: PropTypes.shape({
         loginUser: PropTypes.object,
-        setLoginUser: PropTypes.object
+        setLoginUser: PropTypes.func
     })
 };
 

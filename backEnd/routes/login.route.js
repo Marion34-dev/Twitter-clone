@@ -22,7 +22,7 @@ router.post('/', async (req, res) => {
 
     // Create a session and store user data
     req.session.user = { id: user._id, email: user.email, name: user.name };
-    res.json({ message: 'Login success', user });
+    res.json({ message: 'You are successfully logged in!', user });
 
   } catch (err) {
     console.log(err);

@@ -12,8 +12,8 @@ const AddPeep = ({ user: { name, username } }) => {
         e.preventDefault();
         const peepDateCreated = new Date().toISOString();
 
-        const newPeep = new PeepModel(name, username, peepDateCreated, newAddPeep)
-
+        const newPeep = new PeepModel(newAddPeep, peepDateCreated, name, username)
+        console.log(newPeep)
         if (Object.keys(newPeep).length) {
             try {
                 // const res = await axios.post('http://localhost:3000/add', newPeep)
@@ -21,6 +21,9 @@ const AddPeep = ({ user: { name, username } }) => {
 
                 setAddPeepMessage(res.data.message);
                 setNewAddPeep('');
+                window.alert("Your peep has been posted!");
+
+
             } catch (error) {
                 setAddPeepMessage('Request unsuccessful, please try again')
             }
@@ -31,17 +34,17 @@ const AddPeep = ({ user: { name, username } }) => {
             <div id="postComponent">
                 <div>
                     <h1> Time to post! </h1>
-                    <h2 className="name">From: {name}</h2>
+                    <h2 className="name">From: {name} ✅</h2>
                     <h3 className="username">{username}</h3>
                     <form onSubmit={makeNewPeep}>
-                        <textarea
+                    <textarea className="largerTextarea"
                             onChange={e => setNewAddPeep(e.target.value)}
-                            placeholder="Type your peep here..."
+                            placeholder="Enter your peep here..."
                             value={newAddPeep} ></textarea>
                         
                         {addPeepMessage && <small>{addPeepMessage}</small>}
                         <br />
-                            <button id="newPeepButton" type="submit">Publish!</button>
+                            <button id="newPeep-button" type="submit"> Publish! </button>
                     </form>
                 </div>
             </div>
