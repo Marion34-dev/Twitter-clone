@@ -1,6 +1,6 @@
 const Footer = () => {
   return (
-    <footer className="mt-auto py-3 text-center container">
+    <footer className="footer">
       © Chitter 2023
     </footer>
   );

@@ -1,59 +1,61 @@
-import { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { useParams, useNavigate } from 'react-router-dom';
 
-import PeepWrapper from './PeepWrapper';
-import PeepModel from './utils/Peep.model';
-import Modal from './utils/Error';
+import { useState } from "react"
+import PropTypes from "prop-types";
+import axios from 'axios';
+import PeepModel from "./utils/Peep.model.js";
 
-const AddPeep = ({ submitAction, data }) => {
+const AddPeep = ({ user: { name, username } }) => {
+    const [newAddPeep, setNewAddPeep] = useState('');
+    const [addPeepMessage, setAddPeepMessage] = useState('');
 
-    const [peep, setPeep] = useState({});
-    const [submitted, setSubmitted] = useState(false);
+    const makeNewPeep = async (e) => {
+        e.preventDefault();
+        const peepDateCreated = new Date().toISOString();
 
-    const navigate = useNavigate();
-    const { _id } = useParams();
+        const newPeep = new PeepModel(name, username, peepDateCreated, newAddPeep)
 
-    useEffect(() => {
-        if (!_id) return setPeep({});
-        const peepToEdit = data?.find(currentPeep => currentPeep._id === _id);
-        if (peepToEdit) return setPeep(peepToEdit);
-        setPeep({ error: `Peep could not be found` });
-    }, [_id, data]);
+        if (Object.keys(newPeep).length) {
+            try {
+                // const res = await axios.post('http://localhost:3000/add', newPeep)
+                const res = await axios.post(`http://${import.meta.env.VITE_PEEPSURL}/add`, newPeep);
 
-    useEffect(() => {
-        if (submitted) navigate("/");
-    }, [submitted, navigate]);
-
-    const submitPeep = (peepMessage, peepDateCreated, peepCreatedBy, username) => {
-        const peepToSubmit = new PeepModel(peepMessage, new Date(peepDateCreated).toISOString(), peepCreatedBy, username, _id);
-        submitAction(peepToSubmit);
-        setSubmitted(true);
-        console.log("Peep posted)")
+                setAddPeepMessage(res.data.message);
+                setNewAddPeep('');
+            } catch (error) {
+                setAddPeepMessage('Request unsuccessful, please try again')
+            }
+        }
     }
 
     return (
-        <>
-            {peep?.error && <Modal handleClose={() => setPeep({})} message={peep.error} />}
-            <div className="addPeep row">
-                <h3>{_id ? `Edit` : `Add`}&nbsp;Peep</h3>
+            <div id="postComponent">
+                <div>
+                    <h1> Time to post! </h1>
+                    <h2 className="name">From: {name}</h2>
+                    <h3 className="username">{username}</h3>
+                    <form onSubmit={makeNewPeep}>
+                        <textarea
+                            onChange={e => setNewAddPeep(e.target.value)}
+                            placeholder="Type your peep here..."
+                            value={newAddPeep} ></textarea>
+                        
+                        {addPeepMessage && <small>{addPeepMessage}</small>}
+                        <br />
+                            <button id="newPeepButton" type="submit">Publish!</button>
+                    </form>
+                </div>
             </div>
-            <PeepWrapper submitAction={submitPeep} peep={peep?.error ? {} : peep} />
-        </>
-    );
+    )
 }
 
 AddPeep.propTypes = {
-    submitAction: PropTypes.func.isRequired,
-    peeps: PropTypes.arrayOf(
-        PropTypes.exact({
-            _id: PropTypes.string,
-            peepMessage: PropTypes.string,
-            peepDateCreated: PropTypes.string,
+    user: PropTypes.oneOfType([
+        PropTypes.bool,
+        PropTypes.shape({
             peepCreatedBy: PropTypes.string,
             username: PropTypes.string
         })
-    )
+    ])
 }
 
 export default AddPeep;

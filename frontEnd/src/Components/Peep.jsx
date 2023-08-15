@@ -1,23 +1,45 @@
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import PeepModel from './utils/Peep.model';
 
-const Peep = ({ peep }) => {
-    const { peepMessage, peepDateCreated, peepCreatedBy, username, _id} = peep;
-    const dateCreated = new Date(peepDateCreated).toUTCString();
+const Peep = ({ body }) => {
+    const { peepCreatedBy, username, peepDateCreated, peepMessage } = body;
+
+    // Function to format the date as DD/MMM/YYYY
+    const formatDate = (date) => {
+        const options = { day: '2-digit', month: 'short', year: 'numeric' };
+        return new Date(date).toLocaleDateString(undefined, options);
+    };
+
+    const formattedDate = formatDate(peepDateCreated);
 
     return (
-        <tr>
-            <td>{peepMessage}</td>
-            <td>{dateCreated}</td>
-            <td>{peepCreatedBy}</td>
-            <td>{username}</td>
-        </tr>
+        <div className="card">
+            <div className="container">
+                {body ? (
+                    <>
+                        <h4 className='PeepName'>{peepCreatedBy}</h4>
+                        <h6 className='username'>{username}</h6>
+                        <h6>{formattedDate}</h6>
+                        <h2>{peepMessage}</h2>
+                    </>
+                ) : (
+                    <p>Sorry, there are no peeps available. How about posting one now?</p>
+                )}
+            </div>
+        </div>
     );
-};
+}
 
 Peep.propTypes = {
-    peep: PropTypes.instanceOf(PeepModel),
-}
+    body: PropTypes.shape({
+        _id: PropTypes.string,
+        peepCreatedBy: PropTypes.string,
+        username: PropTypes.string,
+        peepDateCreated: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.instanceOf(Date),
+        ]),
+        peepMessage: PropTypes.string,
+    }),
+};
 
 export default Peep;

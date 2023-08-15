@@ -1,46 +1,35 @@
 import { useState } from 'react'
-import './App.css'
+import './index.css'
 import Header from './Components/Header';
 import Footer from './Components/Footer';
-import RoutedMain from './Components/RoutedMain';
-import Authentication from './Components/authentication/Authentication';
-import { checkLogin } from './Components/authentication/authHelper';
-import AllPeeps from './Components/AllPeeps';
-import samplePeepsData from './Components/utils/sampleData';
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
+import RoutedMain from "./Components/RoutedMain.jsx";
+import Login from './Components/authentication/login.jsx';
+import AddPeep from '../src/Components/AddPeep.jsx'
+import Register from '../src/Components/Register.jsx';
 
-function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
 
-  const handleLogin = async ({ email, password }) => {
-    setLoggedIn(await checkLogin({email, password}));
-  }  
+const App = () => {
+    const [loginUser, setLoginUser] = useState();
 
-  const logout = () => {
-    setLoggedIn(false);
-  };
+    return (
+        <>
+            <Router>
+                <Header user={{ loginUser, setLoginUser }} />
 
-  return (
-    <>
-      <div className="container">
-        <Header/>
- 
-      
-         
-        <AllPeeps data={samplePeepsData} className="ViewAll" />
-        
-                        
-        {loggedIn ? (
-          // Render RoutedMain if logged in
-          <RoutedMain />
-        ) : (
-          // Render Authentication if not logged in
-            <Authentication handleLogin={handleLogin} />
-        )}
+                <Routes>
+                    <Route path="*" element={<Navigate to="/" />} />
+                    <Route path="/" element={<RoutedMain loginUser={loginUser} />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/login" element={<Login user={{ loginUser, setLoginUser }} />} />
+                    <Route path="/add/:_id" element={<AddPeep user={loginUser} />} />
+                    
+                </Routes>
 
-        <Footer />
-        </div>
-    </>
-  );
+                <Footer />
+            </Router>
+        </>
+    );
 }
 
-export default App
+export default App;

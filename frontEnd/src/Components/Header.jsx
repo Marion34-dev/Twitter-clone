@@ -1,38 +1,41 @@
-import { Link, NavLink } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 
-const Header = ({ loggedIn, logout }) => {
-  return (
-    <header>
-      <nav className="navbar navbar-expand-lg">
-        <div className="container-fluid">
-          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-        <span className="navbar-toggler-icon"></span>
-          </button>
-          <Link to="/" className="navbar-brand">Chitter App</Link>
-            <>
-              <div className="collapse navbar-collapse">
-                <div className="navbar-nav">
-                  <NavLink to="/">
-                    View Peeps
-                  </NavLink>   
+const Header = ({ user: { loginUser, setLoginUser } }) => {
 
-                  <NavLink to="/add" className={(({ isActive }) => isActive ? `nav-link active` : `nav-link`)}>
-                    Post Peep
-                  </NavLink>
-                </div>
-              </div>
-              <a href="/" className="nav-item mr-3 nav-link p-3" onClick={logout}>Log Out</a>
-            </>
-        </div>
-      </nav>
-    </header>
-  );
-};
+    const logOut = () => {
+        setLoginUser(null)
+    }
 
-Header.defaultProps = {
-  loggedIn: PropTypes.bool.isRequired,
-  logout: PropTypes.func.isRequired
+    return (
+        <> 
+            <nav>
+                <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
+                    <div className="container-fluid"> 
+                        <h2 style={{ color: 'white' }}> Chitter App </h2>
+                                {!loginUser && <Link className="navbar-brand" to="/"> Home </Link>}
+
+                                {loginUser && <Link className="navbar-brand" to="/"> Home </Link>}
+
+                                {!loginUser && <Link className="navbar-brand" to="/register"> Register </Link>}
+
+                                {!loginUser && <Link className="navbar-brand" to="/login"> Log in </Link>}
+
+                                {loginUser && <Link className="navbar-brand" to="/" onClick={logOut}> Log out </Link>}
+
+                                {loginUser && <Link className="navbar-brand" to={`/add/${loginUser._id}`}> Post a Peep </Link>} 
+                    </div>
+                </nav>
+            </nav>
+        </>
+    )
+}
+
+Header.propTypes = {
+    user: PropTypes.exact({
+        loginUser: PropTypes.object,
+        setLoginUser: PropTypes.func
+    })
 }
 
 export default Header;

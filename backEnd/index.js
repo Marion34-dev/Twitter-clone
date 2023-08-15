@@ -7,7 +7,6 @@ import { Register } from './routes/register.route.js';
 import { allPeeps } from "./routes/allPeeps.route.js";
 import { singlePeep } from "./routes/singlePeep.route.js";
 import { addPeep } from "./routes/addPeep.route.js";
-// import { isAuthenticated } from './middleware/auth.validation.js';
 import { Logout } from './routes/logout.route.js';
 import User from './models/user.model.js';
 import session from 'express-session';

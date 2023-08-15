@@ -7,7 +7,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.js';
 import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-    <Router>
+    // <Router>
       <App />
-    </Router>
+    // </Router> 
 )
