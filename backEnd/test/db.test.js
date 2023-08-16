@@ -6,6 +6,7 @@ import server from '../index.js';
 import testData from './testData/samplePeeps.json' assert { type: "json" };
 const testDataArray = testData.peeps;
 import User from '../models/user.model.js';
+import { addPeepService, getPeepService, getPeepsService, updatePeepService } from '../services/peeps.service.js'; 
 
 chai.use(chaiHttp);
 
@@ -155,4 +156,134 @@ describe(`Testing requests on the database`, () => {
             expect(res.text).to.be.eql(`Adding new peep failed`);
         });
     });
-})
+
+    describe('Testing the /login route', () => {
+
+    it('should not allow login with incorrect password', async () => {
+        const registerData = { name: 'User1', email: 'test@example.com', password: 'testpassword', username: 'User1' };
+        await chai.request(server).post('/register').send(registerData);
+
+        const loginRes = await chai.request(server).post('/login').send({ email: 'test@example.com', password: 'wrongpassword' });
+
+        expect(loginRes).to.have.status(401);
+        expect(loginRes.body).to.have.property('message', 'Invalid credentials');
+    });
+
+    it('should not allow login with non-existing email', async () => {
+        const loginRes = await chai.request(server).post('/login').send({ email: 'nonexistent@example.com', password: 'testpassword' });
+
+        expect(loginRes).to.have.status(401);
+        expect(loginRes.body).to.have.property('message', 'Invalid credentials');
+    });
+
+    it('should not allow login without providing email', async () => {
+        const loginRes = await chai.request(server).post('/login').send({ password: 'testpassword' });
+
+        expect(loginRes).to.have.status(401);
+        expect(loginRes.body).to.have.property('message', 'Invalid credentials');
+    });
+
+    it('should not allow login without providing password', async () => {
+        const loginRes = await chai.request(server).post('/login').send({ email: 'test@example.com' });
+
+        expect(loginRes).to.have.status(401);
+        expect(loginRes.body).to.have.property('message', 'Invalid credentials');
+    });
+
+    it('should store user data in session upon successful login', async () => {
+        const registerData = { name: 'User1', email: 'test@example.com', password: 'testpassword', username: 'User1' };
+        await chai.request(server).post('/register').send(registerData);
+
+        const loginRes = await chai.request(server).post('/login').send({ email: 'test@example.com', password: 'testpassword' });
+
+        expect(loginRes).to.have.status(200);
+        expect(loginRes.body).to.have.property('message', 'You are successfully logged in!');
+        expect(loginRes.body).to.have.property('user');
+        expect(loginRes.body.user).to.have.property('email', 'test@example.com');
+        expect(loginRes.body.user).to.have.property('name', 'User1');
+    });
+    });
+    
+    describe('Testing the peeps.service function', () => {
+        describe('Testing the addPeepService function', () => {
+            it('should successfully add a new peep', async () => {
+                const newPeep = {
+                    peepMessage: 'New test peep',
+                    peepDateCreated: '2023-08-16T00:00:00.000Z',
+                    peepCreatedBy: 'Alice',
+                    username: '@Wonderland'
+                };
+
+                const addedPeep = await addPeepService(newPeep);
+                expect(addedPeep).to.exist;
+                expect(addedPeep.peepMessage).to.equal(newPeep.peepMessage);
+            });
+
+            it('should throw an error when adding a peep with missing fields', async () => {
+                const incompletePeep = {
+                    peepDateCreated: '2023-08-16T00:00:00.000Z',
+                    peepCreatedBy: 'Bob'
+                };
+
+                try {
+                    await addPeepService(incompletePeep);
+                    throw new Error('Test should have thrown an error');
+                } catch (error) {
+                    expect(error).to.exist;
+                }
+            });
+        });
+
+        describe('Testing the getPeepsService function', () => {
+            it('should retrieve an array of all peeps', async () => {
+                const allPeeps = await getPeepsService();
+                expect(allPeeps).to.be.an('array');
+                expect(allPeeps.length).to.be.at.least(1);
+            });
+        });
+
+        describe('Testing the updatePeepService function', () => {  
+            it('should throw an error when updating a peep with invalid ID', async () => {
+                const invalidPeepId = 'invalid-id';
+                const updatedPeepData = {
+                    peepMessage: 'Updated test peep'
+                };
+
+                try {
+                    await updatePeepService(updatedPeepData, invalidPeepId);
+                    // If no error is thrown, the test should fail
+                    throw new Error('Test should have thrown an error');
+                } catch (error) {
+                    expect(error).to.exist;
+                }
+            });
+        });
+    });
+
+        describe('Testing the allPeeps controller', () => {
+            it('should retrieve peeps with correct properties', async () => {
+                const allPeeps = await getPeepsService();
+                expect(allPeeps).to.be.an('array');
+                expect(allPeeps.length).to.be.at.least(1);
+
+                for (const peep of allPeeps) {
+                    expect(peep).to.have.property('peepMessage');
+                    expect(peep).to.have.property('peepDateCreated');
+                    expect(peep).to.have.property('peepCreatedBy');
+                    expect(peep).to.have.property('username');
+                }
+            });
+
+            it('should retrieve peeps with valid date formats', async () => {
+                const allPeeps = await getPeepsService();
+                expect(allPeeps).to.be.an('array');
+                expect(allPeeps.length).to.be.at.least(1);
+
+                for (const peep of allPeeps) {
+                    const peepDate = new Date(peep.peepDateCreated);
+                    expect(peepDate).to.be.a('date');
+                    expect(peepDate.toString()).to.not.equal('Invalid Date');
+            }
+        });
+    });
+});

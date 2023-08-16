@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "NODE_ENV=test mocha --timeout 10000 --exit",
+    "test": "NODE_ENV=test c8 mocha --timeout 10000 --exit",
     "start": "NODE_ENV=development nodemon server",
     "start-prod": "NODE_ENV=production nodemon src/server",
     "test-win": "SET NODE_ENV=test&&mocha --timeout 10000 --exit",
@@ -16,6 +16,7 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.0",
+    "c8": "^8.0.1",
     "chai": "^4.3.7",
     "chai-http": "^4.4.0",
     "cors": "^2.8.5",
