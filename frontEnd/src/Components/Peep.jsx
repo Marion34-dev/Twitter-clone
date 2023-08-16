@@ -11,7 +11,7 @@ const Peep = ({ body }) => {
                 {body ? (
                     <>
                         <h4 className='PeepName'>{peepCreatedBy}</h4>
-                        <h6 className='username'>{username}</h6>
+                        <h6 className='username'>@{username}</h6>
                         <h6>{formattedDate}</h6>
                         <h2>{peepMessage}</h2>
                     </>

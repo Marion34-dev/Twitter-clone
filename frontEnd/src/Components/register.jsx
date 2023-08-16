@@ -29,6 +29,7 @@ const RegistrationForm = () => {
                 });
 
                 setSubmitted(res.data.message === 'success' ? true : res.data.message);
+                window.alert("Successfully registered! You can now log in");
 
             } catch (error) {
                 console.log(error)

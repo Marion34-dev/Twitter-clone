@@ -5,10 +5,8 @@ import { config } from "dotenv";
 import { Login } from './routes/login.route.js';
 import { Register } from './routes/register.route.js';
 import { allPeeps } from "./routes/allPeeps.route.js";
-import { singlePeep } from "./routes/singlePeep.route.js";
 import { addPeep } from "./routes/addPeep.route.js";
-import { Logout } from './routes/logout.route.js';
-import User from './models/user.model.js';
+// import User from './models/user.model.js';
 import session from 'express-session';
 
 config({ path: `.env.${process.env.NODE_ENV}` });
@@ -46,8 +44,7 @@ app.use('/register', Register);
 // Routes
 app.use(`/`, allPeeps);
 app.use(`/add`, addPeep);
-app.use(`/peep`, singlePeep);
-app.use('/logout', Logout);
+
 
 const server = app.listen(port, host, () => {       //returns a server
   const SERVERHOST = server.address().address;      // defines the URL

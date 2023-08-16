@@ -17,16 +17,16 @@ describe(`Testing requests on the database`, () => {
         try {
             await User.deleteMany();
             await Peep.deleteMany();
-            console.log(`Database cleared`);
+            console.log(`Test database has been cleared`);
         } catch (error) {
-            console.log(`Error clearing`);
+            console.log(`Error clearing test database`);
             throw new Error();
         };
         try {
             await Peep.insertMany(testDataArray);
             console.log(`Database populated with test peeps`);
         } catch (error) {
-            console.log(`Error inserting`);
+            console.log(`Error inserting test peeps`);
             throw new Error();
         };
     });
@@ -155,49 +155,4 @@ describe(`Testing requests on the database`, () => {
             expect(res.text).to.be.eql(`Adding new peep failed`);
         });
     });
-
-         describe('Testing the /log out route', () => {
-             it('should successfully log out the user', async () => {
-                  const res = await chai.request(server).post('/logout').send();
-
-            expect(res).to.have.status(200);
-            expect(res.body).to.have.property('message', 'You\'ll be missed!');
-            });
-    });
-    
-
-    // describe(`/GET/:id peep`, () => {
-    //     it(`should GET a peep by the given id`, async () => {
-    //         const testId = testDataArray[0]._id;
-    //         const res = await testServer
-    //             .get(`/peep/${testId}`)
-    //             .send();
-
-    //         expect(res).to.have.status(200);
-    //         expect(res.body).to.have.property(`_id`, testId);
-    //     });
-    // });
-
-    // describe(`/PUT/:id update existing peep`, () => {
-    //     it(`should update a peep with PUT for the given id`, async () => {
-    //         const peepToUpdate = testDataArray[0];
-    //         peepToUpdate.peepMessage = `Hello`;
-
-    //         const res = await testServer
-    //             .put(`/peep/${peepToUpdate._id}`)
-    //             .send(peepToUpdate);
-
-    //         expect(res).to.have.status(201);
-    //         expect(res.body.peep).to.have.property(`_id`, peepToUpdate._id);
-    //     });
-
-    //     it(`should return a 404 error if the peep to update's id from the url is not found`, async () => {
-    //         const res = await testServer
-    //             .put(`/peep/notAnId`)
-    //             .send(testDataArray[0]);
-
-    //         expect(res).to.have.status(404);
-    //         expect(res.text).to.be.eql(`That peep cannot be found`);
-    //     });
-    // });
 })
