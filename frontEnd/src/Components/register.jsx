@@ -15,7 +15,7 @@ const RegistrationForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         const { name, email, username, password } = newUser;
-
+        
         if (name && email && username && password) {
             try {
                 // const res = await axios.post('http://localhost:3000/register', newUser);
@@ -30,11 +30,13 @@ const RegistrationForm = () => {
 
                 setSubmitted(res.data.message === 'success' ? true : res.data.message);
                 window.alert("Successfully registered! You can now log in");
-
-            } catch (error) {
+            } 
+            
+            catch (error) {
                 console.log(error)
             }
-        }
+        }                 
+
     };
 
     const handleChange = e => {
@@ -45,13 +47,26 @@ const RegistrationForm = () => {
         });
     };
 
-    if (submitted === "user exists") {
+    if (submitted === "User already exists") {
         return (
             <>
                 <h2>{submitted}</h2>
                 <p> You already have an account! <Link to="/login"><br /> Log in </Link></p>
             </>
         );
+    }
+
+    if (submitted === "This username already exists") {
+        return (
+            <>
+                <h2>{submitted}</h2>
+                <p> You already have an account! <Link to="/login"><br /> Log in </Link></p>
+            </>
+        );
+    }
+
+    if (submitted == "success") {
+        return window.alert("Successfully registered! You can now log in")
     }
 
     return (

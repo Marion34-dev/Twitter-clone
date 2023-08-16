@@ -10,6 +10,7 @@ import RoutedMain from '../src/Components/RoutedMain';
 import AddPeep from '../src/Components/AddPeep';
 import RegistrationForm from '../src/Components/Register';
 
+
 describe('Testing the RegistrationForm component', () => {
   it('renders without errors', () => {
     <Router>
