@@ -8,6 +8,14 @@ import Peep from '../src/Components/Peep';
 import Footer from '../src/Components/Footer';
 import RoutedMain from '../src/Components/RoutedMain';
 import AddPeep from '../src/Components/AddPeep';
+import RegistrationForm from '../src/Components/Register';
+
+describe('Testing the RegistrationForm component', () => {
+  it('renders without errors', () => {
+    <Router>
+    render(<RegistrationForm />);</Router>
+  });
+});
 
 
 describe('Testing the AddPeep component', () => {
@@ -21,7 +29,7 @@ describe('Testing the AddPeep component', () => {
   });
 
   it('displays the form to add a peep', () => {
-    const { getByText } = render(<AddPeep user={mockUser} />);
+    const { getByText } = render(<Router><AddPeep user={mockUser} /></Router>);
     // const textarea = getByAttribute('placeholder', 'Enter your peep here...');
     const publishButton = getByText('Publish!');
 
@@ -142,3 +150,4 @@ describe('Testing the Dashboard component', () => {
   });
 
 });
+
