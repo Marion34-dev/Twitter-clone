@@ -12,7 +12,7 @@ import RegistrationForm from '../src/Components/Register';
 
 
 describe('Testing the RegistrationForm component', () => {
-  it('renders without errors', () => {
+  it('renders the RegistrationForm component without errors', () => {
     <Router>
     render(<RegistrationForm />);</Router>
   });
@@ -25,23 +25,20 @@ describe('Testing the AddPeep component', () => {
     username: 'johndoe',
   };
 
-  it('renders without errors', () => {
+  it('renders the AddPeep component without errors', () => {
     render(<AddPeep user={mockUser} />);
   });
 
   it('displays the form to add a peep', () => {
     const { getByText } = render(<Router><AddPeep user={mockUser} /></Router>);
-    // const textarea = getByAttribute('placeholder', 'Enter your peep here...');
     const publishButton = getByText('Publish!');
 
-    // expect(textarea).toBeInTheDocument();
     expect(publishButton).toBeInTheDocument();
   });
 });
 
-
 describe('Testing the RoutedMain component', () => {
-  it('renders the Dashboard component', () => {
+  it('renders the Dashboard component without errors', () => {
     render(<RoutedMain />);
     
   it('displays the welcome message', () => {
@@ -54,7 +51,7 @@ describe('Testing the RoutedMain component', () => {
 });
 
 describe('Testing the Footer component', () => {
-  it('renders without errors', () => {
+  it('renders the Footer component without errors', () => {
     render(<Footer />);
   });
 
@@ -92,15 +89,13 @@ describe('Testing the Peep component', () => {
 
 
 describe('Testing the Header component', () => {
-      // Mock the user object
       const mockUser = {
         loginUser: {
           _id: 'user123',
         },
-        setLoginUser: () => {}, // Mock function
+        setLoginUser: () => {},
       };
 
-      // Wrap the Header component with a Router and provide the mockUser
       const renderWithRouter = (user) => {
         return render(
           <Router>
@@ -109,7 +104,7 @@ describe('Testing the Header component', () => {
         );
       };
 
-  it('renders without errors', () => {
+  it('renders the Header component without errors', () => {
     renderWithRouter(mockUser);
   });
 
@@ -133,22 +128,19 @@ describe('Testing the Header component', () => {
   });
 });
 
-
 describe('Testing the App component', () => {
-    it('renders headline', () => {
+    it('renders the App component without errors', () => {
       render(<App />)
       });
 
-    it('renders the Register component', () => {
+    it('renders the Register component without errors', () => {
       const { getByText } = render(<App />);
       expect(getByText('Register')).toBeInTheDocument();
     });
   });
 
 describe('Testing the Dashboard component', () => {
-  it('renders without errors', () => {
+  it('renders the Dashboard component without errors', () => {
     render(<Dashboard />);
   });
-
 });
-
