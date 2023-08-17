@@ -64,4 +64,3 @@ You will need to type:<br>
 `npm run coverage` to get a coverage report.
 
 Feel free to contribute and publish a few 'tweets'! 
->>>>>>> bb7268362289f3c58a2fb0ebf30ca515092ac671
