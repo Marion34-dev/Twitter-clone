@@ -1,12 +1,10 @@
 # Welcome to the Chitter Challenge!
 
-This JS program represents a small twitter clone that will allow users to post messages to a public wall.
+This JavaScript program is a small Twitter clone that will display all 'tweets'. Once logged in, the user will be able to post a message to the public wall.
 
-The front-end part of the application was built using React and Vite. The tests have been covered by Vitest, and you can also view the Coverage using V8.
-
-The back-end part of the application was built using Express.
-
-MongoDB atlas has been used for the database.
+The back-end part of the application was built using Express. I have used Mocha and Chai/Chai-http for testing and C8 for coverage. <br>
+I have chosen MongoDB Atlas for my database and Mongoose to connect my Express app to the database. <br>
+The front-end part of the application was built using Vite and React. Vitest is used for testing, and V8 for the Coverage.
 
 ### User stories
 
@@ -39,16 +37,24 @@ I want to log out of Chitter
 ## Additional requirements:
 
 - You don't have to be logged in to see the peeps.
-- Trainee software engineers sign up to chitter with their email, password, name and a username (e.g. ewright@digitalfutures.com, password123, Ed Wright, edwright6975).
+- Trainee software engineers sign up to chitter with their email, password, name and a username.
 - The username and email are unique.
 - Peeps (posts to chitter) have the name of the trainee and their user handle.
-- Your README should indicate the technologies used, and give instructions on how to install and run the tests.
 
 ## How to use
 
 You can fork this repository and clone it to your local machine.
 
-You will need to enter:
-`npm install` (or `npm i` for Mac users) to install all dependencies
-`npm start` to start tje server
-`npm test` to run the tests
+You will need to type:<br>
+`npm install` (or `npm i` for Mac users) to install all dependencies.
+
+=> For the back-end program:<br>
+`npm start` to start the server.<br>
+`npm test` to run the tests - the command includes a coverage report.
+
+=> For the front-end program:<br>
+`npm run dev` so that Vite gives you a localhost access to the application. <br>
+`npm test`to run the tests. <br>
+`npm run coverage` to get a coverage report.
+
+Feel free to contribute and publish a few 'tweets'! 
