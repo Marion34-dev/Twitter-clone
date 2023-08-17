@@ -28,15 +28,19 @@ const RegistrationForm = () => {
                     password: '',
                 });
 
-                setSubmitted(res.data.message === 'success' ? true : res.data.message);
-                window.alert("Successfully registered! You can now log in");
+                if (res.data.message === 'Registration successful') {
+                    setSubmitted(true); 
+                    window.alert("Successfully registered! You can now log in");
+                    
+                } else {
+                    setSubmitted(res.data.message);
+                }
             } 
             
-            catch (error) {
-                console.log(error)
+        catch (error) {
+            console.log(error)
             }
-        }                 
-
+       }                 
     };
 
     const handleChange = e => {
@@ -47,26 +51,23 @@ const RegistrationForm = () => {
         });
     };
 
-    if (submitted === "User already exists") {
+    if (submitted === "It seems you already have an account with us.") {
         return (
             <>
                 <h2>{submitted}</h2>
-                <p> You already have an account! <Link to="/login"><br /> Log in </Link></p>
+                <p> You can login instead! <Link to="/login"> Login </Link></p>
             </>
         );
     }
 
-    if (submitted === "This username already exists") {
+    if (submitted === "Sorry, this username already exists.") {
         return (
             <>
                 <h2>{submitted}</h2>
-                <p> You already have an account! <Link to="/login"><br /> Log in </Link></p>
+                <h3> Please use a different username. </h3>
+                 <h3> Or log in if you already have an account: <Link to="/login"> Login </Link></h3>
             </>
         );
-    }
-
-    if (submitted == "success") {
-        return window.alert("Successfully registered! You can now log in")
     }
 
     return (

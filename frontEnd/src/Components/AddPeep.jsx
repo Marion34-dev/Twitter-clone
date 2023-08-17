@@ -5,27 +5,27 @@ import axios from 'axios';
 import PeepModel from "./utils/Peep.model.js";
 
 const AddPeep = ({ user: { name, username } }) => {
-    const [newAddPeep, setNewAddPeep] = useState('');
-    const [addPeepMessage, setAddPeepMessage] = useState('');
+    const [createPeep, setCreatePeep] = useState('');
+    const [addContent, setAddContent] = useState('');
 
     const makeNewPeep = async (e) => {
         e.preventDefault();
         const peepDateCreated = new Date().toISOString();
 
-        const newPeep = new PeepModel(newAddPeep, peepDateCreated, name, username)
+        const newPeep = new PeepModel(createPeep, peepDateCreated, name, username)
         console.log(newPeep)
         if (Object.keys(newPeep).length) {
             try {
                 // const res = await axios.post('http://localhost:3000/add', newPeep)
                 const res = await axios.post(`http://${import.meta.env.VITE_PEEPSURL}/add`, newPeep);
 
-                setAddPeepMessage(res.data.message);
-                setNewAddPeep('');
+                setAddContent(res.data.message);
+                setCreatePeep('');
                 window.alert("Your peep has been posted!");
 
 
             } catch (error) {
-                setAddPeepMessage('Request unsuccessful, please try again')
+                 window.alert('Request unsuccessful, please type some text and try again');
             }
         }
     }
@@ -38,11 +38,11 @@ const AddPeep = ({ user: { name, username } }) => {
                     <h3 className="username">{username}</h3>
                     <form onSubmit={makeNewPeep}>
                     <textarea className="largerTextarea"
-                            onChange={e => setNewAddPeep(e.target.value)}
+                            onChange={e => setCreatePeep(e.target.value)}
                             placeholder="Enter your peep here..."
-                            value={newAddPeep} ></textarea>
+                            value={createPeep} ></textarea>
                         
-                        {addPeepMessage && <small>{addPeepMessage}</small>}
+                        {addContent && <small>{addContent}</small>}
                         <br />
                             <button id="newPeep-button" type="submit"> Publish! </button>
                     </form>

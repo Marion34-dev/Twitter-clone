@@ -11,12 +11,12 @@ router.post('/', async (req, res) => {
     // Check if the user already exists in the database
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.json({ message: 'User already exists' });
+      return res.json({ message: 'It seems you already have an account with us.' });
     }
 
     const existingUsername = await User.findOne({ username });
     if (existingUsername) {
-      return res.json({ message: 'This username already exists' });
+      return res.json({ message: 'Sorry, this username already exists.' });
     }
 
     // Hash the password before saving it to the database

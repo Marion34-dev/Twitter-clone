@@ -60,8 +60,8 @@ describe(`Testing requests on the database`, () => {
             const res = await chai.request(server).post('/register').send(registerData);
 
             expect(res).to.have.status(200);
-            expect(res.body).to.have.property('message', 'User already exists');
-        });
+            expect(res.body).to.have.property('message', 'It seems you already have an account with us.');
+        }); 
 
         it('should not allow registration with an existing username', async () => {
             const existingUser = new User({ name: 'Existing User', email: 'test@example.com', password: 'existingpassword', username: 'User1' });
@@ -71,7 +71,7 @@ describe(`Testing requests on the database`, () => {
             const res = await chai.request(server).post('/register').send(registerData);
 
             expect(res).to.have.status(200);
-            expect(res.body).to.have.property('message', 'This username already exists');
+            expect(res.body).to.have.property('message', 'Sorry, this username already exists.');
         });
 
         it('once registered, the user should be able to log in', async () => {
