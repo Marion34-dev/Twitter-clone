@@ -4,7 +4,7 @@ This JavaScript program is a small Twitter clone that will display all 'tweets'.
 
 The back-end part of the application was built using Express. I have used Mocha and Chai/Chai-http for testing and C8 for coverage. <br>
 I have chosen MongoDB Atlas for my database and Mongoose to connect my Express app to the database. <br>
-The front-end part of the application was built using Vite and React. Vitest is used for testing, and V8 for the Coverage.
+The front-end part of the application was built using Vite and React. Vitest is used for testing, and V8 for Coverage.
 
 ### User stories
 
