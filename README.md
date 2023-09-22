@@ -64,5 +64,7 @@ You will need to type:<br>
 
 Feel free to contribute and publish a few 'tweets'! 
 
-## Here is a snapshot of what it looks like
-![Screenshot 2023-08-17 at 18 55 49](https://github.com/Marion34-dev/chitter-challenge/assets/125993993/59f80d28-5fe0-4f1b-b3e0-808df4d0e62f)
+## Here is a snapshot of what it looks like!
+
+![Screenshot 2023-09-21 at 15 27 28](https://github.com/Marion34-dev/Twitter-clone/assets/125993993/b57b78a6-567d-401d-8aed-2c488aab63b4)
+
