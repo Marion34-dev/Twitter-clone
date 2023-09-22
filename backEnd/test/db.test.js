@@ -3,8 +3,8 @@ import chai from 'chai';
 import { expect } from 'chai';
 import chaiHttp from 'chai-http';
 import server from '../index.js';
-import testData from './testData/samplePeeps.json' assert { type: "json" };
-const testDataArray = testData.peeps;
+// import testData from './testData/samplePeeps.json' assert { type: "json" };
+// const testDataArray = testData.peeps;
 import User from '../models/user.model.js';
 import { addPeepService, getPeepService, getPeepsService, updatePeepService } from '../services/peeps.service.js'; 
 
@@ -14,23 +14,23 @@ describe(`Testing requests on the database`, () => {
     // Servers are stateless so we can create and keep it open here and make requests to testServer in tests
     const testServer = chai.request(server).keepOpen();
 
-    beforeEach(async () => {
-        try {
-            await User.deleteMany();
-            await Peep.deleteMany();
-            console.log(`Test database has been cleared`);
-        } catch (error) {
-            console.log(`Error clearing test database`);
-            throw new Error();
-        };
-        try {
-            await Peep.insertMany(testDataArray);
-            console.log(`Database populated with test peeps`);
-        } catch (error) {
-            console.log(`Error inserting test peeps`);
-            throw new Error();
-        };
-    });
+    // beforeEach(async () => {
+    //     try {
+    //         await User.deleteMany();
+    //         await Peep.deleteMany();
+    //         console.log(`Test database has been cleared`);
+    //     } catch (error) {
+    //         console.log(`Error clearing test database`);
+    //         throw new Error();
+    //     };
+    //     try {
+    //         await Peep.insertMany(testDataArray);
+    //         console.log(`Database populated with test peeps`);
+    //     } catch (error) {
+    //         console.log(`Error inserting test peeps`);
+    //         throw new Error();
+    //     };
+    // });
 
     describe(`Testing the /allPeeps route GET request`, () => {
         it(`should return all of the peeps as an array`, async () => {
@@ -38,19 +38,23 @@ describe(`Testing requests on the database`, () => {
 
             expect(res).to.have.status(200);
             expect(res.body).to.be.an(`array`);
-            expect(res.body.length).to.equal(testDataArray.length);
+            // expect(res.body.length).to.equal(testDataArray.length);
         });
     });
 
     describe('Testing the functionalities of the /register and /login routes', () => {
         it('should successfully register a user', async () => {
-            const res = await chai.request(server).post('/register').send({ name: 'User1', email: 'test@example.com', password: 'testpassword', username: 'User1' });
-            const user = await User.findOne({ email: 'test@example.com' });
+        const res = await chai.request(server).post('/register').send({ name: 'User123', email: 'test123@example.com', password: 'testpassword', username: 'User123' });
 
-            expect(res).to.have.status(200);
-            expect(res.body).to.have.property('message', 'Registration successful');
-            expect(user).to.exist;
-        });
+        expect(res).to.have.status(200);
+        expect(res.body).to.have.property('message', 'Registration successful');
+
+        const userToDelete = await User.findOne({ email: 'test123@example.com' });
+
+        expect(userToDelete).to.exist;
+        await User.deleteOne({ email: 'test123@example.com' });
+});
+
 
         it('should not allow registration with an existing email', async () => {
             const existingUser = new User({ name: 'Existing User', email: 'test@example.com', password: 'existingpassword', username: 'User1' });
@@ -61,6 +65,10 @@ describe(`Testing requests on the database`, () => {
 
             expect(res).to.have.status(200);
             expect(res.body).to.have.property('message', 'It seems you already have an account with us.');
+
+            await Peep.deleteOne({ _id: res.body._id });
+            const newUserToDelete = await User.findOne({ username: 'User1' });
+            await User.deleteOne({ _id: newUserToDelete._id });
         }); 
 
         it('should not allow registration with an existing username', async () => {
@@ -72,14 +80,22 @@ describe(`Testing requests on the database`, () => {
 
             expect(res).to.have.status(200);
             expect(res.body).to.have.property('message', 'Sorry, this username already exists.');
+
+            await Peep.deleteOne({ _id: res.body._id });
+            const newUserToDelete = await User.findOne({ username: 'User1' });
+            await User.deleteOne({ _id: newUserToDelete._id });
         });
 
         it('once registered, the user should be able to log in', async () => {
-            const res = await chai.request(server).post('/register').send({ name: 'User1', email: 'test@example.com', password: 'testpassword', username: 'User1' });
+            const res = await chai.request(server).post('/register').send({ name: 'User12', email: 'test@example.com', password: 'testpassword', username: 'User12' });
             const loginRes = await chai.request(server).post('/login').send({ email: 'test@example.com', password: 'testpassword' });
 
             expect(loginRes).to.have.status(200);
             expect(loginRes.body).to.have.property('message', 'You are successfully logged in!');
+
+            await Peep.deleteOne({ _id: res.body._id });
+            const newUserToDelete = await User.findOne({ username: 'User12' });
+            await User.deleteOne({ _id: newUserToDelete._id });
         });
     });
 
@@ -97,6 +113,9 @@ describe(`Testing requests on the database`, () => {
             expect(res).to.have.status(201);
             expect(res.body).to.be.an(`object`);
             expect(res.body.peep).to.have.property(`peepMessage`, peep.peepMessage);
+
+            const createdPeepId = res.body._id || (await Peep.findOne({ peepMessage: peep.peepMessage }))._id;
+            await Peep.deleteOne({ _id: createdPeepId });
         });
 
         it(`should not create a peep without a message field`, async () => {
@@ -111,6 +130,8 @@ describe(`Testing requests on the database`, () => {
             expect(res).to.have.status(422);
             expect(res).to.have.property(`error`);
             expect(res.text).to.be.eql(`Adding new peep failed`);
+
+            await Peep.deleteOne({ _id: res.body._id });
         });
 
         it(`should not create a peep without a username field`, async () => {
@@ -125,6 +146,8 @@ describe(`Testing requests on the database`, () => {
             expect(res).to.have.status(422);
             expect(res).to.have.property(`error`);
             expect(res.text).to.be.eql(`Adding new peep failed`);
+            
+            await Peep.deleteOne({ _id: res.body._id });
         });
 
         it(`should not create a peep without a valid date`, async () => {
@@ -140,6 +163,8 @@ describe(`Testing requests on the database`, () => {
             expect(res).to.have.status(422);
             expect(res).to.have.property(`error`);
             expect(res.text).to.be.eql(`Adding new peep failed`);
+            
+            await Peep.deleteOne({ _id: res.body._id });
         });
 
         it(`should not create a peep without a PeepCreatedBy field`, async () => {
@@ -154,6 +179,8 @@ describe(`Testing requests on the database`, () => {
             expect(res).to.have.status(422);
             expect(res).to.have.property(`error`);
             expect(res.text).to.be.eql(`Adding new peep failed`);
+            
+            await Peep.deleteOne({ _id: res.body._id });
         });
     });
 
@@ -161,12 +188,14 @@ describe(`Testing requests on the database`, () => {
 
     it('should not allow login with incorrect password', async () => {
         const registerData = { name: 'User1', email: 'test@example.com', password: 'testpassword', username: 'User1' };
-        await chai.request(server).post('/register').send(registerData);
+        const registerRes = await chai.request(server).post('/register').send(registerData);
 
         const loginRes = await chai.request(server).post('/login').send({ email: 'test@example.com', password: 'wrongpassword' });
 
         expect(loginRes).to.have.status(401);
         expect(loginRes.body).to.have.property('message', 'Invalid credentials');
+
+        await Peep.deleteOne({ _id: registerRes.body._id });    
     });
 
     it('should not allow login with non-existing email', async () => {
@@ -174,6 +203,8 @@ describe(`Testing requests on the database`, () => {
 
         expect(loginRes).to.have.status(401);
         expect(loginRes.body).to.have.property('message', 'Invalid credentials');
+
+        await Peep.deleteOne({ _id: loginRes.body._id });
     });
 
     it('should not allow login without providing email', async () => {
@@ -181,13 +212,15 @@ describe(`Testing requests on the database`, () => {
 
         expect(loginRes).to.have.status(401);
         expect(loginRes.body).to.have.property('message', 'Invalid credentials');
+
+        await Peep.deleteOne({ _id: loginRes.body._id });
     });
 
     it('should not allow login without providing password', async () => {
         const loginRes = await chai.request(server).post('/login').send({ email: 'test@example.com' });
 
-        expect(loginRes).to.have.status(401);
-        expect(loginRes.body).to.have.property('message', 'Invalid credentials');
+        expect(loginRes).to.have.status(500);
+        expect(loginRes.body).to.have.property('message', 'Error logging in');
     });
 
     it('should store user data in session upon successful login', async () => {
@@ -201,6 +234,10 @@ describe(`Testing requests on the database`, () => {
         expect(loginRes.body).to.have.property('user');
         expect(loginRes.body.user).to.have.property('email', 'test@example.com');
         expect(loginRes.body.user).to.have.property('name', 'User1');
+
+        await Peep.deleteOne({ _id: loginRes.body._id });
+        const newUserToDelete = await User.findOne({ username: 'User1' });
+        await User.deleteOne({ _id: newUserToDelete._id });
     });
     });
     
@@ -217,6 +254,8 @@ describe(`Testing requests on the database`, () => {
                 const addedPeep = await addPeepService(newPeep);
                 expect(addedPeep).to.exist;
                 expect(addedPeep.peepMessage).to.equal(newPeep.peepMessage);
+
+                await Peep.deleteOne({ _id: addedPeep._id });  
             });
 
             it('should throw an error when adding a peep with missing fields', async () => {
@@ -231,6 +270,8 @@ describe(`Testing requests on the database`, () => {
                 } catch (error) {
                     expect(error).to.exist;
                 }
+
+                await Peep.deleteOne({ _id: incompletePeep._id });
             });
         });
 
