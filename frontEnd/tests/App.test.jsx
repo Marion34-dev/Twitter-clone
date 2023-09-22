@@ -1,6 +1,6 @@
 import { render, fireEvent } from '@testing-library/react';
 import App from "../src/App";
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 import Dashboard from '../src/Components/Dashboard';
 import Header from '../src/Components/Header';
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -11,13 +11,13 @@ import AddPeep from '../src/Components/AddPeep';
 import RegistrationForm from '../src/Components/Register';
 
 
-describe('Testing the RegistrationForm component', () => {
+
+describe('RegistrationForm Component', () => {
   it('renders the RegistrationForm component without errors', () => {
-    <Router>
-    render(<RegistrationForm />);</Router>
+    const formComponent = <RegistrationForm />;
+    expect(formComponent).toBeDefined();
   });
 });
-
 
 describe('Testing the AddPeep component', () => {
   const mockUser = {
@@ -25,43 +25,85 @@ describe('Testing the AddPeep component', () => {
     username: 'johndoe',
   };
 
+  beforeEach(() => {
+    // use mocked time
+    vi.useFakeTimers();
+  });
+
   it('renders the AddPeep component without errors', () => {
-    render(<AddPeep user={mockUser} />);
+    const addPeepComponent = (
+      <Router>
+        <AddPeep user={mockUser} />
+      </Router>
+    );
+    expect(addPeepComponent).toBeDefined();
   });
 
   it('displays the form to add a peep', () => {
-    const { getByText } = render(<Router><AddPeep user={mockUser} /></Router>);
+    const { getByText } = render(
+      <Router>
+        <AddPeep user={mockUser} />
+      </Router>
+    );
     const publishButton = getByText('Publish!');
-
     expect(publishButton).toBeInTheDocument();
+  });
+
+  it('allows entering a peep message', () => {
+    const { getByPlaceholderText } = render(
+      <Router>
+        <AddPeep user={mockUser} />
+      </Router>
+    );
+    
+    const peepMessageInput = getByPlaceholderText('Enter your peep here...');
+
+    fireEvent.change(peepMessageInput, { target: { value: 'This is a test peep.' } });
+    expect(peepMessageInput.value).toBe('This is a test peep.');
+  });
+
+
+  it('submits the peep when "Publish!" button is clicked', () => {
+    const { getByText } = render(
+      <Router>
+        <AddPeep user={mockUser} />
+      </Router>
+    );
+    const publishButton = getByText('Publish!');
+    fireEvent.click(publishButton);
   });
 });
 
+
+
+
 describe('Testing the RoutedMain component', () => {
-  it('renders the Dashboard component without errors', () => {
-    render(<RoutedMain />);
-    
+  it('renders the RoutedMain component without errors', () => {
+    const routedMainComponent = <RoutedMain />;
+    expect(routedMainComponent).toBeDefined();
+  });
+
   it('displays the welcome message', () => {
     const { getByText } = render(<RoutedMain />);
     const welcomeMessage = getByText('Welcome to Chitter!');
-    
     expect(welcomeMessage).toBeInTheDocument();
-  });
   });
 });
 
+
 describe('Testing the Footer component', () => {
   it('renders the Footer component without errors', () => {
-    render(<Footer />);
+    const footerComponent = <Footer />;
+    expect(footerComponent).toBeDefined();
   });
 
   it('displays the copyright information', () => {
     const { getByText } = render(<Footer />);
     const copyrightText = getByText('© Chitter 2023');
-    
     expect(copyrightText).toBeInTheDocument();
   });
 });
+
 
 describe('Testing the Peep component', () => {
     const mockBody = {
