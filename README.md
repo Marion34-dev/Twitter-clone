@@ -1,6 +1,8 @@
-# Welcome to the Chitter Challenge!
+# Welcome to my Tweet app program!
 
-This JavaScript program is a small Twitter clone that will display all 'tweets'. Once logged in, the user will be able to post a message to the public wall.
+## It has been deployed here: https://tweet-frontend.onrender.com/
+
+This JavaScript program is a small X (formerly-known as Twitter) clone that will display all 'Tweets' on the dashboard. Once logged in, the user will be able to post a 'Tweet' to the public wall.
 
 The back-end part of the application was built using Express. I have used Mocha and Chai/Chai-http for testing and C8 for coverage. <br>
 I have chosen MongoDB Atlas for my database and Mongoose to connect my Express app to the database. <br>
@@ -63,8 +65,3 @@ You will need to type:<br>
 `npm run coverage` to get a coverage report.
 
 Feel free to contribute and publish a few 'tweets'! 
-
-## Here is a snapshot of what it looks like!
-
-![Screenshot 2023-09-21 at 15 27 28](https://github.com/Marion34-dev/Twitter-clone/assets/125993993/b57b78a6-567d-401d-8aed-2c488aab63b4)
-
